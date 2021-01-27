@@ -1,0 +1,12 @@
+Server:
+  servlet:
+    context-path: /sds
+  port: 6316
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sds?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: 2378
+mybatis:
+  mapper-locations: mybatis/mapper/*.xml
