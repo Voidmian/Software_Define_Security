@@ -5,22 +5,25 @@ import lombok.Data;
 
 /**
  * @Author Voidmian
- * @Date 2021/1/27 21:14
+ * @Date 2021/1/28 17:19
  */
 @Data
-public class ComponentForm {
+public class TestCaseForm {
     @JsonProperty("id")
     int id;
 
     @JsonProperty("name")
     String name;
 
-    @JsonProperty("command")
-    String command;
-
     @JsonProperty("desc")
     String desc;
 
-    @JsonProperty("s_location")
-    String sLocation;
+    @JsonProperty("protocol")
+    String protocol;
+
+    @JsonProperty("concurrency")
+    int concurrency;
+
+    @JsonProperty("seconds")
+    int seconds;
 }

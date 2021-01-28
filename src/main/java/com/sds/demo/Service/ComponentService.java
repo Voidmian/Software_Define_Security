@@ -11,7 +11,6 @@ import java.util.List;
  * @Date 2021/1/25 15:35
  */
 public interface ComponentService {
-    public List<Component> getAllComponent();
     public Integer insert(ComponentVO componentVO,String location);
     public String deployComponent(ComponentVO componentVO,String sLocation);
     public Component getComponentById(int id);

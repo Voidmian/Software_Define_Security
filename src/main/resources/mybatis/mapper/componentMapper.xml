@@ -15,11 +15,11 @@
         SELECT * FROM component WHERE id = #{id}
     </select>
 
-    <select id="getListByName" parameterType="java.lang.String" resultType="com.sds.demo.Entity.Component">
+    <select id="getListByName" parameterType="java.lang.String" resultMap="BaseComponent">
         SELECT * FROM component WHERE name = #{name}
     </select>
 
-    <select id="getAll" resultType="com.sds.demo.Entity.Component">
+    <select id="getAll" resultMap="BaseComponent">
         SELECT * FROM component
     </select>
 
@@ -42,7 +42,13 @@
 
     <update id="updateComponent" parameterType="com.sds.demo.Entity.Component" >
         update  `sds`.`component`
-        set   `name` = #{name}, `desc` = #{desc}, `command` = #{command}, `location` = #{location},`update_time` = #{updateTime,jdbcType=TIMESTAMP}
+        <set>
+            <if test="name != null">`name` = #{name},</if>
+            <if test="desc != null">`desc` = #{desc},</if>
+            <if test="command != null">`command` = #{command},</if>
+            <if test="location!= null">`location` = #{location},</if>
+            `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+        </set>
         where id = #{id}
     </update>
 

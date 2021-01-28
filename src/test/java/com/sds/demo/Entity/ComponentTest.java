@@ -1,5 +1,11 @@
 package com.sds.demo.Entity;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.mysql.cj.xdevapi.JsonArray;
+
+import com.sds.demo.VO.TestResultVO;
+import com.sds.demo.converter.TestResultConverter;
 import com.sds.demo.dao.ComponentMapper;
 import org.junit.Test;
 
@@ -90,4 +96,5 @@ public class ComponentTest {
         List res = componentMapper.getAllPage(pageSize, 1);
         System.out.println(res.size());
     }
+
 }

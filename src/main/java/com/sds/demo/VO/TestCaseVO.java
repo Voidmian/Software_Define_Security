@@ -6,14 +6,16 @@ import java.time.LocalDateTime;
 
 /**
  * @Author Voidmian
- * @Date 2021/1/27 19:16
+ * @Date 2021/1/28 16:54
  */
 @Data
-public class ComponentVO {
+public class TestCaseVO {
     private Integer id;
     private String name;
     private String desc;
-    private String command;
+    private String protocol;
+    private Integer concurrency;
+    private Integer seconds;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 }

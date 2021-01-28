@@ -1,29 +1,23 @@
 package com.sds.demo.Entity;
 
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sds.demo.VO.ComponentVO;
 import org.springframework.stereotype.Repository;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @Author Voidmian
- * @Date 2021/1/25 11:34
+ * @Date 2021/1/28 14:25
  */
-
-
 @lombok.Data
 @Repository
-public class Component implements Serializable {
+public class TestCase   {
     private Integer id;
     private String name;
     private String desc;
-    private String command;
-    private String location;
-    @JsonProperty("create_time")
+    private String protocol;
+    private Integer concurrency;
+    private Integer seconds;
     private LocalDateTime createTime;
-    @JsonProperty("update_time")
     private LocalDateTime updateTime;
-
 }

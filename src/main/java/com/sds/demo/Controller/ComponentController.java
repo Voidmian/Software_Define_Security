@@ -6,6 +6,7 @@ import com.sds.demo.Service.ComponentService;
 import com.sds.demo.VO.*;
 import com.sds.demo.converter.ComponentConverter;
 import com.sds.demo.form.ComponentForm;
+import com.sds.demo.util.TimeUtil;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -25,10 +26,7 @@ public class ComponentController {
         this.componentService = componentService;
     }
 
-//    /**
-//     * @param pageSize int
-//     * @param pageIndex int
-//     */
+
     @GetMapping("/get_all")
     public BaseVO<BaseListVO> getAllComponent(
             @RequestParam(value = "page_size",defaultValue = "10",required = false) Integer pageSize,
@@ -44,11 +42,10 @@ public class ComponentController {
         componentVO.setName(componentForm.getName());
         componentVO.setDesc(componentForm.getDesc());
         componentVO.setCommand(componentForm.getCommand());
-        componentVO.setCreateTime(LocalDateTime.now());
-        componentVO.setUpdateTime(LocalDateTime.now());
+        componentVO.setCreateTime(TimeUtil.now());
+        componentVO.setUpdateTime(TimeUtil.now());
         String location = componentService.deployComponent(componentVO,componentForm.getSLocation());
-        Integer id = componentService.insert(componentVO,location);
-        return new BaseVO<>("success", id, 200);
+        return new BaseVO<>("success", 1, 200);
     }
 
     @GetMapping("/operate")

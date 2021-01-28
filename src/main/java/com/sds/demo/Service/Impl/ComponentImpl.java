@@ -39,13 +39,28 @@ public class ComponentImpl implements ComponentService {
     }
 
     public String deployComponent(ComponentVO componentVO,String sLocation){
-        return "aaa";
+        int port = 22;
+
+        String host = "47.98.228.148";  //todo：需要配置
+        String username = "root";     //todo：需要配置
+        String password = "yjj0413_Aly"; //todo：需要配置
+        String remote = "/home";    //todo：需要配置
+        SshCommand sshCommand = new SshCommand(host, port, username, password);
+        try{
+            String out= sshCommand.copy(sLocation,remote,componentVO.getName());
+            Component component = ComponentConverter.convertVD(componentVO);
+            component.setLocation(remote+"/"+componentVO.getName());
+            componentMapper.insertComponent(component);
+        }
+        catch (Exception e){
+            System.out.println(e.toString());
+        }
+        return "ok";
     }
+
     public void operateComponent(Component component,String operate){
 
     }
-
-
 
     public BaseListVO<ComponentVO> getAllComponentPage(Integer pageSize, Integer pageIndex){
         BaseList<Component> baseList =  new BaseList<>(pageSize,pageIndex);
@@ -53,11 +68,16 @@ public class ComponentImpl implements ComponentService {
         return  ComponentConverter.convertListDV(baseList);
     }
 
+    /**
+     *ssh后在远端执行命令
+     */
     public void sshComponent(Component component)  {
         String host = "47.98.228.148";
         int port = 22;
         String username = "root";
         String password = "yjj0413_Aly";
+        String local = "D:\\tes1t.txt";
+        String remote = "/home";
         String[] commands = new String[2];
         commands[0] = "cd /home\n";
         commands[1] = "ifconfig\n";
