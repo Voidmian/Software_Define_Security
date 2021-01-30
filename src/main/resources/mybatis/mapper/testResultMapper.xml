@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sds.demo.dao.TestResultMapper">
+    <resultMap id="BaseTestResult" type="com.sds.demo.Entity.TestResult">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="case_id" property="caseId" jdbcType="INTEGER"/>
+        <result column="trans_rate" property="transRate" jdbcType="LONGVARCHAR"/>
+        <result column="trans_scale" property="transScale" jdbcType="LONGVARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="getListByCaseIdPage"  resultMap="BaseTestResult">
+        SElECT id,case_id,create_time,update_time FROM test_result WHERE case_id = #{id} limit #{pageSize} OFFSET #{offset}
+    </select>
+
+    <select id="getListByCaseId"  resultMap="BaseTestResult">
+        SElECT id,case_id,create_time,update_time FROM test_result WHERE case_id = #{id}
+    </select>
+
+    <insert id="insertTestResult" parameterType="com.sds.demo.Entity.TestResult" useGeneratedKeys="true" keyProperty="id">
+        insert into  `sds`.`test_result`(`id`,`case_id`,`trans_rate`,`trans_scale`,`create_time`,`update_time`)
+        values(
+        #{id},
+        #{caseId,jdbcType=INTEGER},
+        #{transRate,jdbcType=LONGVARCHAR},
+        #{transScale,jdbcType=LONGVARCHAR},
+        #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP}
+       )
+    </insert>
+
+    <delete id="deleteTestResult" parameterType="java.lang.Integer">
+        delete from `test_result` where id = #{id}
+    </delete>
+</mapper>

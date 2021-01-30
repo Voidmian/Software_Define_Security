@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sds.demo.dao.TestCaseMapper">
+    <resultMap id="BaseTestCase" type="com.sds.demo.Entity.TestCase">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="desc" property="desc" jdbcType="VARCHAR"/>
+        <result column="protocol" property="protocol" jdbcType="VARCHAR"/>
+        <result column="concurrency" property="concurrency" jdbcType="INTEGER"/>
+        <result column="seconds" property="seconds" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="getOneById" parameterType="java.lang.Integer" resultMap="BaseTestCase">
+        SELECT * FROM test_case WHERE id = #{id}
+    </select>
+
+    <select id="getListByName" parameterType="java.lang.String" resultMap="BaseTestCase">
+        SELECT * FROM test_case WHERE name = #{name}
+    </select>
+
+    <select id="getAll" resultMap="BaseTestCase">
+        SELECT * FROM test_case
+    </select>
+
+    <select id="getAllPage" resultMap="BaseTestCase">
+        SElECT * FROM test_case limit #{pageSize} OFFSET #{offset}
+    </select>
+
+    <insert id="insertTestCase" parameterType="com.sds.demo.Entity.TestCase" useGeneratedKeys="true" keyProperty="id">
+        insert into  `sds`.`test_case`(`id`,`name`,`desc`,`protocol`,`concurrency`,`seconds`,`create_time`,`update_time`)
+        values(
+        #{id},
+        #{name,jdbcType=VARCHAR},
+        #{desc,jdbcType=VARCHAR},
+        #{protocol,jdbcType=VARCHAR},
+        #{concurrency},
+        #{seconds},
+        #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP}
+       )
+    </insert>
+
+    <update id="updateTestCase" parameterType="com.sds.demo.Entity.TestCase">
+        update `sds`.`test_case`
+        <set>
+            <if test="name != null">`name` = #{name},</if>
+            <if test="desc != null">`desc` = #{desc},</if>
+            <if test="protocol != null">`protocol` = #{protocol},</if>
+            <if test="concurrency!= null">`concurrency` = #{concurrency},</if>
+            <if test="seconds != null">`seconds` = #{seconds},</if>
+            `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTestCase" parameterType="java.lang.Integer">
+        delete from `test_case` where id = #{id}
+    </delete>
+</mapper>
