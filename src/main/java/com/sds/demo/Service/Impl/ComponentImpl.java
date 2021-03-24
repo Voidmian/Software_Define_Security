@@ -7,7 +7,9 @@ import com.sds.demo.VO.BaseListVO;
 import com.sds.demo.VO.ComponentVO;
 import com.sds.demo.converter.ComponentConverter;
 import com.sds.demo.dao.ComponentMapper;
+import com.sds.demo.util.IperfParams;
 import com.sds.demo.util.SshCommand;
+import com.sds.demo.util.StartIperf;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +26,7 @@ public class ComponentImpl implements ComponentService {
         this.componentMapper = componentMapper;
     }
 
-    public Component getComponentById(int id){
+    public Component getComponentById(int id) {
         return componentMapper.getOneById(id);
     }
 
@@ -32,13 +34,13 @@ public class ComponentImpl implements ComponentService {
         return componentMapper.getAll();
     }
 
-    public Integer insert(ComponentVO componentVO,String location) {
+    public Integer insert(ComponentVO componentVO, String location) {
         Component component = ComponentConverter.convertVD(componentVO);
         component.setLocation(location);
         return componentMapper.insertComponent(component);
     }
 
-    public String deployComponent(ComponentVO componentVO,String sLocation){
+    public String deployComponent(ComponentVO componentVO, String sLocation) {
         int port = 22;
 
         String host = "47.98.228.148";  //todo：需要配置
@@ -46,32 +48,31 @@ public class ComponentImpl implements ComponentService {
         String password = "yjj0413_Aly"; //todo：需要配置
         String remote = "/home";    //todo：需要配置
         SshCommand sshCommand = new SshCommand(host, port, username, password);
-        try{
-            String out= sshCommand.copy(sLocation,remote,componentVO.getName());
+        try {
+            String out = sshCommand.copy(sLocation, remote, componentVO.getName());
             Component component = ComponentConverter.convertVD(componentVO);
-            component.setLocation(remote+"/"+componentVO.getName());
+            component.setLocation(remote + "/" + componentVO.getName());
             componentMapper.insertComponent(component);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.toString());
         }
         return "ok";
     }
 
-    public void operateComponent(Component component,String operate){
+    public void operateComponent(Component component, String operate) {
 
     }
 
-    public BaseListVO<ComponentVO> getAllComponentPage(Integer pageSize, Integer pageIndex){
-        BaseList<Component> baseList =  new BaseList<>(pageSize,pageIndex);
+    public BaseListVO<ComponentVO> getAllComponentPage(Integer pageSize, Integer pageIndex) {
+        BaseList<Component> baseList = new BaseList<>(pageSize, pageIndex);
         baseList.setList(componentMapper.getAllPage(baseList.getPageSize(), baseList.getOffset()));
-        return  ComponentConverter.convertListDV(baseList);
+        return ComponentConverter.convertListDV(baseList);
     }
 
     /**
-     *ssh后在远端执行命令
+     * ssh后在远端执行命令
      */
-    public void sshComponent(Component component)  {
+    public void sshComponent(Component component) {
         String host = "47.98.228.148";
         int port = 22;
         String username = "root";
@@ -83,11 +84,22 @@ public class ComponentImpl implements ComponentService {
         commands[1] = "ifconfig\n";
 
         SshCommand sshCommand = new SshCommand(host, port, username, password);
-        try{
-            String out = sshCommand.exeCommand(commands);
+        try {
+            String out = sshCommand.exeCommands(commands);
             System.out.println(out);
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
-        catch (Exception e){
+    }
+
+    public void startIperf(Component component) {
+        IperfParams iperfParams = IperfParams.componentToIperfParams(component);
+        StartIperf startIperf = new StartIperf();
+        try {
+            String command = startIperf.startAOrder(component.getName() + component.getId(), iperfParams);
+            SshCommand sshCommand = new SshCommand(startIperf.getA_ip(), startIperf.getA_port(), startIperf.getA_username(), startIperf.getA_password());
+            String out = sshCommand.exeCommand(command);
+        } catch (Exception e) {
             System.out.println(e.toString());
         }
     }

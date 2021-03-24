@@ -1,7 +1,6 @@
 package com.sds.demo.util;
 
 
-
 import com.sds.demo.Entity.TestCase;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.sshd.client.SshClient;
@@ -42,7 +41,7 @@ public class SshCommand {
         this.user = user;
     }
 
-    static public SshCommand getInstance(){
+    static public SshCommand getInstance() {
         String host = "47.98.228.148";
         int port = 22;
         String username = "root";
@@ -50,7 +49,7 @@ public class SshCommand {
         return new SshCommand(host, port, username, password);
     }
 
-    public String exeCommand(String [] commands) throws IOException {
+    public String exeCommands(String[] commands) throws IOException {
         SshClient client = SshClient.setUpDefaultClient();
         client.start();
 
@@ -64,8 +63,8 @@ public class SshCommand {
                 try {
                     channel.open().verify(defaultTimeoutSeconds, TimeUnit.SECONDS);
                     try (OutputStream pipedIn = channel.getInvertedIn()) {
-                        for (String command:commands
-                             ) {
+                        for (String command : commands
+                        ) {
                             pipedIn.write(command.getBytes());
                             pipedIn.flush();
                             channel.waitFor(EnumSet.of(ClientChannelEvent.STDOUT_DATA),
@@ -84,11 +83,41 @@ public class SshCommand {
         return null;
     }
 
-    public String copy(String localPath,String remotePath,String remoteFileName) throws IOException {
+    public String exeCommand(String command) throws IOException {
         SshClient client = SshClient.setUpDefaultClient();
         client.start();
-        try (ClientSession session = client.connect(user, host, port).verify().getSession())
-        {
+
+        try (ClientSession session = client.connect(user, host, port).verify(defaultTimeoutSeconds, TimeUnit.SECONDS).getSession()) {
+            session.addPasswordIdentity(password);
+            session.auth().verify(defaultTimeoutSeconds, TimeUnit.SECONDS);
+
+            try (ByteArrayOutputStream responseStream = new ByteArrayOutputStream();
+                 ClientChannel channel = session.createChannel(Channel.CHANNEL_SHELL)) {
+                channel.setOut(responseStream);
+                try {
+                    channel.open().verify(defaultTimeoutSeconds, TimeUnit.SECONDS);
+                    try (OutputStream pipedIn = channel.getInvertedIn()) {
+                        pipedIn.write(command.getBytes());
+                        pipedIn.flush();
+                        channel.waitFor(EnumSet.of(ClientChannelEvent.STDOUT_DATA),
+                                TimeUnit.SECONDS.toMillis(defaultTimeoutSeconds));
+                    }
+                    String responseString = new String(responseStream.toByteArray());
+                    System.out.println(responseString);
+                } finally {
+                    channel.close(false);
+                }
+            }
+        } finally {
+            client.stop();
+        }
+        return null;
+    }
+
+    public String copy(String localPath, String remotePath, String remoteFileName) throws IOException {
+        SshClient client = SshClient.setUpDefaultClient();
+        client.start();
+        try (ClientSession session = client.connect(user, host, port).verify().getSession()) {
             session.addPasswordIdentity(password);
             session.auth().verify(defaultTimeoutSeconds, TimeUnit.SECONDS);
             SftpFileSystem sftp = SftpClientFactory.instance().createSftpFileSystem(session);
@@ -100,34 +129,31 @@ public class SshCommand {
             Files.deleteIfExists(remoteFile);
             Files.copy(Paths.get(localPath), remoteFile);
             session.close(false);
-        }  catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.toString());
-        }
-        finally {
+        } finally {
             client.stop();
         }
-        return  null;
+        return null;
     }
 
-    public String download(String localPath,String remotePath,String remoteFileName) {
+    public String download(String localPath, String remotePath, String remoteFileName) {
         SshClient client = SshClient.setUpDefaultClient();
         client.start();
-        try (ClientSession session = client.connect(user, host, port).verify().getSession())
-        {
+        try (ClientSession session = client.connect(user, host, port).verify().getSession()) {
             session.addPasswordIdentity(password);
             session.auth().verify(defaultTimeoutSeconds, TimeUnit.SECONDS);
             SftpFileSystem sftp = SftpClientFactory.instance().createSftpFileSystem(session);
             Files.deleteIfExists(Paths.get(localPath));
             Path remoteFile = sftp.getDefaultDir().resolve(remotePath).resolve(remoteFileName);
-            Files.copy(remoteFile,Paths.get(localPath));
+            Files.copy(remoteFile, Paths.get(localPath));
             session.close(false);
-        }  catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.toString());
-        }
-        finally {
+        } finally {
             client.stop();
         }
-        return  null;
+        return null;
     }
 
     public String startTestCase(TestCase testCase) {
