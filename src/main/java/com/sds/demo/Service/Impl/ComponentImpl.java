@@ -96,9 +96,19 @@ public class ComponentImpl implements ComponentService {
         IperfParams iperfParams = IperfParams.componentToIperfParams(component);
         StartIperf startIperf = new StartIperf();
         try {
-            String command = startIperf.startAOrder(component.getName() + component.getId(), iperfParams);
-            SshCommand sshCommand = new SshCommand(startIperf.getA_ip(), startIperf.getA_port(), startIperf.getA_username(), startIperf.getA_password());
-            String out = sshCommand.exeCommand(command);
+            String commandC = startIperf.startCOrder(component.getName() + component.getId());
+            SshCommand connectC = new SshCommand(startIperf.getC_ip(), startIperf.getC_port(), startIperf.getC_username(), startIperf.getC_password());
+            String out = connectC.exeCommand(commandC);
+            String commandA = startIperf.startAOrder(component.getName() + component.getId(), iperfParams);
+            SshCommand connectA = new SshCommand(startIperf.getA_ip(), startIperf.getA_port(), startIperf.getA_username(), startIperf.getA_password());
+            out = connectA.exeCommand(commandA);
+            System.out.println(out);
+            Thread.sleep(Integer.parseInt(iperfParams.getTotalTime()) * 1000000);
+            String remoteAddr = new String();
+            String localAddr = new String();
+            connectA.download(localAddr,remoteAddr,component.getName() + component.getId()+".txt");
+            connectC.download(localAddr,remoteAddr,component.getName() + component.getId()+".txt");
+
         } catch (Exception e) {
             System.out.println(e.toString());
         }
