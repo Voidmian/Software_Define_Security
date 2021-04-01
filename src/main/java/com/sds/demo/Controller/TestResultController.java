@@ -31,7 +31,6 @@ public class TestResultController {
     }
 
     @DeleteMapping("/delete_all")
-
     public BaseVO<String> deleteTestCase( @RequestParam(value = "case_id" ,required = true) Integer caseId) {
         Integer res = testResultService.deleteAllById(caseId);
         return new BaseVO<>("success", "删除"+res+"条记录", 200);

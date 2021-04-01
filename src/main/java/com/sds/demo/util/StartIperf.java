@@ -6,13 +6,9 @@ package com.sds.demo.util;
  * To send order to Iperf Client side A and Iperf Server side C
  */
 
+import com.sds.demo.Entity.IperfParams;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 @Data
 @NoArgsConstructor

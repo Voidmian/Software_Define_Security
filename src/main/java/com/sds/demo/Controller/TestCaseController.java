@@ -37,26 +37,45 @@ public class TestCaseController {
     @PostMapping("/insert")
     public BaseVO<String> insertTestCase(@RequestBody TestCaseForm testCaseForm) {
         TestCaseVO testCaseVO = new TestCaseVO();
+
         testCaseVO.setName(testCaseForm.getName());
         testCaseVO.setDesc(testCaseForm.getDesc());
-        testCaseVO.setConcurrency(testCaseForm.getConcurrency());
+        testCaseVO.setComponentName(testCaseForm.getComponentName());
         testCaseVO.setProtocol(testCaseForm.getProtocol());
-        testCaseVO.setSeconds(testCaseForm.getSeconds());
+        testCaseVO.setTotalTime(testCaseForm.getTotalTime());
+        testCaseVO.setBandwidthLimit(testCaseForm.getBandwidthLimit());
+        testCaseVO.setBidirectionalTest(testCaseForm.getBidirectionalTest());
+        testCaseVO.setTotalPackages(testCaseForm.getTotalPackages());
+        testCaseVO.setBufferLength(testCaseForm.getBufferLength());
+        testCaseVO.setTCPWindow(testCaseForm.getTCPWindow());
+        testCaseVO.setMss(testCaseForm.getMss());
+        testCaseVO.setIpv4_6(testCaseForm.getIpv4_6());
+
         testCaseVO.setCreateTime(TimeUtil.now());
         testCaseVO.setUpdateTime(TimeUtil.now());
+
         String res = testCaseService.insert(testCaseVO);
         return new BaseVO<>("success", res, 200);
     }
 
+    @Deprecated
     @PostMapping("/update")
     public BaseVO<String> updateTestCase(@RequestBody TestCaseForm testCaseForm) {
         TestCaseVO testCaseVO = new TestCaseVO();
-        testCaseVO.setId(testCaseForm.getId());
+
         testCaseVO.setName(testCaseForm.getName());
         testCaseVO.setDesc(testCaseForm.getDesc());
-        testCaseVO.setConcurrency(testCaseForm.getConcurrency());
+        testCaseVO.setComponentName(testCaseForm.getComponentName());
         testCaseVO.setProtocol(testCaseForm.getProtocol());
-        testCaseVO.setSeconds(testCaseForm.getSeconds());
+        testCaseVO.setTotalTime(testCaseForm.getTotalTime());
+        testCaseVO.setBandwidthLimit(testCaseForm.getBandwidthLimit());
+        testCaseVO.setBidirectionalTest(testCaseForm.getBidirectionalTest());
+        testCaseVO.setTotalPackages(testCaseForm.getTotalPackages());
+        testCaseVO.setBufferLength(testCaseForm.getBufferLength());
+        testCaseVO.setTCPWindow(testCaseForm.getTCPWindow());
+        testCaseVO.setMss(testCaseForm.getMss());
+        testCaseVO.setIpv4_6(testCaseForm.getIpv4_6());
+
         testCaseVO.setUpdateTime(TimeUtil.now());
         String res = testCaseService.update(testCaseVO);
         return new BaseVO<>("success", res, 200);
@@ -81,8 +100,4 @@ public class TestCaseController {
         String res = testResultService.insert(testResultDetailVO);
         return new BaseVO<>("success", res, 200);
     }
-
-
-
-
 }

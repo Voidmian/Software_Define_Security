@@ -12,6 +12,10 @@
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <sql id="Fields">
+    `name`,`desc`,`protocol`,`time_slot`,`total_time`, `component_name`, `bandwidth_limit`,`total_packages`,`buffer_length`,`bidirectional_test`,`tcp_window`,`mss`,`ipv4_6`,`create_time`,`update_time`
+    </sql>
+
     <select id="getOneById" parameterType="java.lang.Integer" resultMap="BaseTestCase">
         SELECT * FROM test_case WHERE id = #{id}
     </select>
@@ -29,14 +33,22 @@
     </select>
 
     <insert id="insertTestCase" parameterType="com.sds.demo.Entity.TestCase" useGeneratedKeys="true" keyProperty="id">
-        insert into  `sds`.`test_case`(`id`,`name`,`desc`,`protocol`,`concurrency`,`seconds`,`create_time`,`update_time`)
+        insert into  `sds`.`test_case`(`name`,`desc`,`protocol`,`time_slot`,`total_time`, `component_name`, `bandwidth_limit`,`total_packages`,`buffer_length`,`bidirectional_test`,`tcp_window`,`mss`,`ipv4_6`,`create_time`,`update_time`)
         values(
-        #{id},
         #{name,jdbcType=VARCHAR},
         #{desc,jdbcType=VARCHAR},
         #{protocol,jdbcType=VARCHAR},
-        #{concurrency},
-        #{seconds},
+        #{timeSlot},
+        #{totalTime},
+        #{componentName,jdbcType=VARCHAR},
+        #{bandwidthLimit,jdbcType=VARCHAR},
+        #{totalPackages,jdbcType=VARCHAR},
+        #{protocol,jdbcType=VARCHAR},
+        #{bufferLength,jdbcType=VARCHAR},
+        #{bidirectionalTest,jdbcType=VARCHAR},
+        #{mss,jdbcType=VARCHAR},
+        #{bidirectionalTest,jdbcType=VARCHAR},
+        #{ipv4_6,jdbcType=VARCHAR},
         #{createTime,jdbcType=TIMESTAMP},
         #{updateTime,jdbcType=TIMESTAMP}
        )
@@ -52,7 +64,7 @@
             <if test="seconds != null">`seconds` = #{seconds},</if>
             `update_time` = #{updateTime,jdbcType=TIMESTAMP}
         </set>
-        where id = #{id}
+        where name = #{name}
     </update>
 
     <delete id="deleteTestCase" parameterType="java.lang.Integer">

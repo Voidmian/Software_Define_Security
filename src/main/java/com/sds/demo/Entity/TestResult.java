@@ -18,6 +18,7 @@ public class TestResult implements Serializable {
     private Integer caseId;
     private String transRate;
     private String transScale;
+    private String data;
     @JsonProperty("create_time")
     private LocalDateTime createTime;
     @JsonProperty("update_time")

@@ -16,8 +16,16 @@ public class TestCase   {
     private String name;
     private String desc;
     private String protocol;
-    private Integer concurrency;
-    private Integer seconds;
+    private Integer timeSlot;
+    private Integer totalTime;
+    private String componentName;
+    private String bandwidthLimit;
+    private String totalPackages;
+    private String bufferLength;
+    private String bidirectionalTest;
+    private String TCPWindow;
+    private String mss;
+    private String ipv4_6;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 }

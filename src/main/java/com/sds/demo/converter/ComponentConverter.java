@@ -14,13 +14,13 @@ import java.util.List;
  * @Date 2021/1/27 19:38
  */
 public class ComponentConverter {
-    static  public Component convertVD(ComponentVO componentVO){
+    static public Component convertVD(ComponentVO componentVO){
         Component component = new Component();
         BeanUtils.copyProperties(componentVO, component);
         return component;
     }
 
-    static  public ComponentVO convertDV(Component component){
+    static public ComponentVO convertDV(Component component){
         ComponentVO componentVO = new ComponentVO();
         BeanUtils.copyProperties(component, componentVO);
         return componentVO;

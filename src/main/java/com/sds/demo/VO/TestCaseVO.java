@@ -1,5 +1,6 @@
 package com.sds.demo.VO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -10,12 +11,19 @@ import java.time.LocalDateTime;
  */
 @Data
 public class TestCaseVO {
-    private Integer id;
     private String name;
     private String desc;
     private String protocol;
-    private Integer concurrency;
-    private Integer seconds;
+    private String componentName;
+    private String totalTime;
+    private String timeSlot;
+    private String bandwidthLimit;
+    private String totalPackages;
+    private String bufferLength;
+    private String bidirectionalTest;
+    private String TCPWindow;
+    private String mss;
+    private String ipv4_6;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 }
