@@ -1,7 +1,10 @@
 Server:
+  host: 121.248.12.116
+  username: root
+  password: 123568
+  port: 6316
   servlet:
     context-path: /sds
-  port: 6316
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -13,19 +16,20 @@ mybatis:
 
 Iperf:
   A:
-    ip: 47.98.228.148
+    ip: 192.127.10.2
     port: 22
     username: root
-    password: yjj0413_Aly
+    password: 123456
   C:
-    ip: 47.98.228.148
-    port: 22
+    ip: 192.127.12.1
+    port: 8081
     username: root
-    password: yjj0413_Aly
+    password: 123456
+  remote: /home/sender/iperf3_file/
+  testPort:  26316
 Component:
   B:
     ip: 47.98.228.148
     port: 22
     username: root
     password: yjj0413_Aly
-    remote: /home

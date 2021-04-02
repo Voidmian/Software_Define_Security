@@ -58,8 +58,6 @@ public class IperfServiceImpl implements IperfService {
         String cmd = "iperf3 -s -p " + this.port + " -V >" + iD + ".txt";
         return cmd;
     }
-    public String get_remoteAdddress(){
-        System.out.println("/home/sender/");
-        return "/home/sender/";
-    }
+
+
 }

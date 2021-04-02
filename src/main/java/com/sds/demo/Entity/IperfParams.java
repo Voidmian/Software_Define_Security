@@ -8,6 +8,7 @@ import lombok.Data;
  */
 @Data
 public class IperfParams {
+
     private String protocol;
     private String totalTime;
     private String timeSlot;

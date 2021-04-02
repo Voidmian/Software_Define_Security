@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/test_result")
 public class TestResultController {
     TestResultService testResultService;
-    public TestResultController( TestResultService testResultService) {
+    public TestResultController(TestResultService testResultService) {
         this.testResultService = testResultService;
     }
 
@@ -53,6 +53,5 @@ public class TestResultController {
         String res = testResultService.delete(id);
         return new BaseVO<>("success", res, 200);
     }
-
 }
 

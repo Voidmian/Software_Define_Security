@@ -45,14 +45,13 @@ public class ComponentController {
         return new BaseVO<>("success", 1, 200);
     }
 
-    @GetMapping("/operate")
-    /**
-     * @Param id int
-     * @Param operation String
-     */
-    public BaseVO<Integer> startComponent(Integer id,String operation) {
-        Component component = componentService.getComponentById(id);
-        componentService.operateComponent(component,operation);
-        return new BaseVO<>("success", id, 200);
+
+    @GetMapping("/api/cors/get")
+    public String get(){
+        return "cors test get method";
+    }
+    @PostMapping("/api/cors/post")
+    public String post(){
+        return "cors test post method";
     }
 }

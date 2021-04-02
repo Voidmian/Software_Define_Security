@@ -7,7 +7,7 @@ import com.sds.demo.VO.BaseListVO;
 import com.sds.demo.VO.ComponentVO;
 import com.sds.demo.converter.ComponentConverter;
 import com.sds.demo.dao.ComponentMapper;
-import com.sds.demo.util.SshCommand;
+import com.sds.demo.util.SSHConnection;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -21,15 +21,15 @@ import java.util.List;
 public class ComponentImpl implements ComponentService {
     private final ComponentMapper componentMapper;
     @Value("${Component.B.ip}")
-    String host;                     //todo：需要配置B
-    @Value("${Component.B.port")
+    private String host;                     //todo：需要配置B
+    @Value("${Component.B.port}")
     private int port;
     @Value("${Component.B.username}")
-    String username;
+    private String username;
     @Value("${Component.B.password}")//todo：需要配置B
-    String password;                 //todo：需要配置B
+    private String password;                 //todo：需要配置B
     @Value("${Component.B.remote}")
-    String remote;                  //todo：需要配置B 镜像存放地址
+    private String remote;                  //todo：需要配置B 镜像存放地址
 
 
     public ComponentImpl(ComponentMapper componentMapper) {
@@ -37,8 +37,8 @@ public class ComponentImpl implements ComponentService {
     }
 
     @Override
-    public Component getComponentById(int id) {
-        return componentMapper.getOneById(id);
+    public Component getComponentByName(String name) {
+        return componentMapper.getOneByName(name);
     }
 
     public List<Component> getAllComponent() {
@@ -54,10 +54,9 @@ public class ComponentImpl implements ComponentService {
 
     @Override
     public String deployComponent(ComponentVO componentVO, String sLocation) {
-        int port = 22;
-        SshCommand sshCommand = new SshCommand(host, port, username, password);
+        SSHConnection SSHConnection = new SSHConnection(host, port, username, password);
         try {
-            String out = sshCommand.copy(sLocation, remote, componentVO.getName());
+            String out = SSHConnection.copy(sLocation, remote, componentVO.getName());
             Component component = ComponentConverter.convertVD(componentVO);
             component.setLocation(remote + "/" + componentVO.getName());
             componentMapper.insertComponent(component);
@@ -66,10 +65,7 @@ public class ComponentImpl implements ComponentService {
         }
         return "ok";
     }
-    @Override
-    public void operateComponent(Component component, String operate) {
 
-    }
 
     public BaseListVO<ComponentVO> getAllComponentPage(Integer pageSize, Integer pageIndex) {
         BaseList<Component> baseList = new BaseList<>(pageSize, pageIndex);
@@ -85,10 +81,10 @@ public class ComponentImpl implements ComponentService {
         String[] commands = new String[1];
         commands[0] = component.getCommand();
 
-        SshCommand sshCommand = new SshCommand(host, port, username, password);
+        SSHConnection SSHConnection = new SSHConnection(host, port, username, password);
 
         try {
-            String out = sshCommand.exeCommands(commands);
+            String out = SSHConnection.exeCommands(commands);
             System.out.println(out);
         } catch (Exception e) {
             System.out.println(e.toString());

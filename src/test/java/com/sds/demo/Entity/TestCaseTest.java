@@ -27,8 +27,8 @@ public class TestCaseTest {
         testCase.setId(1);
         testCase.setName("aaa");
         testCase.setDesc("测试");
-        testCase.setConcurrency(10);
-        testCase.setSeconds(100);
+        //testCase.setConcurrency(10);
+        //testCase.setSeconds(100);
         testCase.setProtocol("tcp");
         testCase.setCreateTime(TimeUtil.now());
         testCase.setUpdateTime(TimeUtil.now());
@@ -40,8 +40,8 @@ public class TestCaseTest {
         TestCase testCase = new TestCase();
         testCase.setId(1);
         testCase.setName("bbb");
-        testCase.setConcurrency(17667);
-        testCase.setSeconds(100);
+        //testCase.setConcurrency(17667);
+        //testCase.setSeconds(100);
         testCase.setProtocol("tcp");
         testCase.setCreateTime(TimeUtil.now());
         testCase.setUpdateTime(TimeUtil.now());
@@ -55,9 +55,9 @@ public class TestCaseTest {
         System.out.println(res);
     }
 
-    @Test
+/*    @Test
     public void find(){
-        TestCase testCase = testCaseMapper.getOneById(2);
+        TestCase testCase = testCaseMapper.getOneByName();
         List<TestCase> res = testCaseMapper.getAll();
         System.out.println(res.size());
         res = testCaseMapper.getAllPage(5, 1);
@@ -65,7 +65,7 @@ public class TestCaseTest {
         res = testCaseMapper.getListByName("aaa");
         System.out.println(res.size());
 
-    }
+    }*/
 
 
 }

@@ -12,5 +12,4 @@ public interface IperfService {
     void startIperf(IperfParams iperfParams);
     String startACommand(String iD, IperfParams iperfParams) throws Exception;
     String startCCommand(String iD);
-    String get_remoteAdddress();
 }

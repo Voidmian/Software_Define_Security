@@ -14,7 +14,7 @@ import java.util.List;
 
 @org.springframework.stereotype.Component
 public interface ComponentMapper {
-    Component getOneById(int id);
+    Component getOneByName(String name);
     List<Component> getListByName(String name);
     List<Component> getAllPage(int pageSize, int offset);
     List<Component> getAll();

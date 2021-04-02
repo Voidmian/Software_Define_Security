@@ -17,5 +17,5 @@ public interface TestCaseService {
     public String update(TestCaseVO testCaseVO);
     public String delete(int id);
 
-    public TestResultDetailVO startCase(int id);
+    public TestResultDetailVO startCase(String name);
 }

@@ -1,7 +1,7 @@
 package com.sds.demo.Service.Impl;
 
 
-import com.sds.demo.util.SshCommand;
+import com.sds.demo.util.SSHConnection;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,20 +25,20 @@ public class ComponentImplTest {
 
     }
 
-    @Test
+/*    @Test
     public void downloadComponent() {
 
         String local = "D:\\test.sh";
         String remote = "/home";
 
 
-        SshCommand sshCommand = SshCommand.getInstance();
+        SSHConnection SSHConnection = SSHConnection.getInstance();
         try {
-            String out = sshCommand.download(local, remote, "test.sh");
+            String out = SSHConnection.download(local, remote, "test.sh");
             System.out.println(out);
         } catch (Exception e) {
             System.out.println(e.toString());
         }
 
-    }
+    }*/
 }

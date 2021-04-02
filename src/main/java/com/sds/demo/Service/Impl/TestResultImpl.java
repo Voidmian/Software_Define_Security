@@ -2,6 +2,7 @@ package com.sds.demo.Service.Impl;
 
 import com.sds.demo.Entity.BaseList;
 import com.sds.demo.Entity.Component;
+import com.sds.demo.Entity.Data;
 import com.sds.demo.Entity.TestResult;
 import com.sds.demo.Service.TestResultService;
 import com.sds.demo.VO.BaseListVO;
@@ -37,11 +38,16 @@ public class TestResultImpl implements TestResultService {
         return TestResultConverter.convertDDetailV(testResult);
     }
 
-    public String insert(TestResultDetailVO testResultDetailVO) {
+    public String insert(Data data) {
+        testResultMapper.insertTestResult(data);
+        return "ok";
+    }
+
+/*    public String insert(TestResultDetailVO testResultDetailVO) {
         TestResult testResult = TestResultConverter.convertDetailVD(testResultDetailVO);
         testResultMapper.insertTestResult(testResult);
         return "ok";
-    }
+    }*/
 
     public String delete(int id) {
         testResultMapper.deleteTestResult(id);

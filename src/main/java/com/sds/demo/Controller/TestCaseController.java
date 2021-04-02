@@ -58,46 +58,25 @@ public class TestCaseController {
         return new BaseVO<>("success", res, 200);
     }
 
-    @Deprecated
-    @PostMapping("/update")
-    public BaseVO<String> updateTestCase(@RequestBody TestCaseForm testCaseForm) {
-        TestCaseVO testCaseVO = new TestCaseVO();
-
-        testCaseVO.setName(testCaseForm.getName());
-        testCaseVO.setDesc(testCaseForm.getDesc());
-        testCaseVO.setComponentName(testCaseForm.getComponentName());
-        testCaseVO.setProtocol(testCaseForm.getProtocol());
-        testCaseVO.setTotalTime(testCaseForm.getTotalTime());
-        testCaseVO.setBandwidthLimit(testCaseForm.getBandwidthLimit());
-        testCaseVO.setBidirectionalTest(testCaseForm.getBidirectionalTest());
-        testCaseVO.setTotalPackages(testCaseForm.getTotalPackages());
-        testCaseVO.setBufferLength(testCaseForm.getBufferLength());
-        testCaseVO.setTCPWindow(testCaseForm.getTCPWindow());
-        testCaseVO.setMss(testCaseForm.getMss());
-        testCaseVO.setIpv4_6(testCaseForm.getIpv4_6());
-
-        testCaseVO.setUpdateTime(TimeUtil.now());
-        String res = testCaseService.update(testCaseVO);
-        return new BaseVO<>("success", res, 200);
-    }
 
     @DeleteMapping("/delete")
     /**
      * @Param id int
      */
     public BaseVO<String> deleteTestCase(int id ) {
-
         String res = testCaseService.delete(id);
         return new BaseVO<>("success", res, 200);
     }
 
     @PostMapping("/start")
     /**
-     * @Param id int
+     * @Param String name
      */
-    public BaseVO<String> startTestCase(int id) {
-        TestResultDetailVO testResultDetailVO = testCaseService.startCase(id);
-        String res = testResultService.insert(testResultDetailVO);
-        return new BaseVO<>("success", res, 200);
+    public BaseVO<String> startTestCase(String name) {
+        TestResultDetailVO testResultDetailVO = testCaseService.startCase(name);
+
+        //: TODO 重写
+        return new BaseVO<>("success", null, 200);
     }
+
 }

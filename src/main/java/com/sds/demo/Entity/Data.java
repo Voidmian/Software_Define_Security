@@ -8,7 +8,8 @@ import java.util.SplittableRandom;
  * Created by linjiandong on 2021/3/23.
  */
 public class Data {
-    private String id;
+    //private String id;
+    private String caseName;
     private String protocol = "";
     private ArrayList intercal= new ArrayList<>();
     private ArrayList transfer= new ArrayList<>();
@@ -24,17 +25,18 @@ public class Data {
     private String lost_total_datagrams_avg= "";
     private String cwnd_avg= "";
 
-    public Data(String id) {
-        this.id = id;
+    public Data(String name) {
+        this.caseName = name;
     }
 
+/*
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
-    }
+    }*/
 
     public String getProtocol() { return protocol; }
 

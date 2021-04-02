@@ -16,8 +16,8 @@
     `name`,`desc`,`protocol`,`time_slot`,`total_time`, `component_name`, `bandwidth_limit`,`total_packages`,`buffer_length`,`bidirectional_test`,`tcp_window`,`mss`,`ipv4_6`,`create_time`,`update_time`
     </sql>
 
-    <select id="getOneById" parameterType="java.lang.Integer" resultMap="BaseTestCase">
-        SELECT * FROM test_case WHERE id = #{id}
+    <select id="getOneByName" parameterType="java.lang.Integer" resultMap="BaseTestCase">
+        SELECT * FROM test_case WHERE name = #{name}
     </select>
 
     <select id="getListByName" parameterType="java.lang.String" resultMap="BaseTestCase">
