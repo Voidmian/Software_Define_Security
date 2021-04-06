@@ -21,11 +21,11 @@ public class TestCaseForm {
     @JsonProperty("componentName")
     private String componentName;
 
-    @JsonProperty("seconds")
-    private String totalTime;
-
     @JsonProperty("timeSlot")
-    private String timeSlot;
+    private int timeSlot;
+
+    @JsonProperty("totalTime")
+    private int totalTime;
 
     @JsonProperty("bandwidthLimit")
     private String bandwidthLimit;

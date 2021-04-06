@@ -1,26 +1,31 @@
 package com.sds.demo.Service.Impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.sds.demo.Entity.BaseList;
 
 import com.sds.demo.Entity.Component;
-import com.sds.demo.Entity.Data;
+import com.sds.demo.Entity.TestResult;
+import com.sds.demo.Entity.DataD;
 import com.sds.demo.Entity.IperfParams;
 import com.sds.demo.Entity.TestCase;
+import com.sds.demo.Entity.TestResult;
 import com.sds.demo.Service.TestCaseService;
 import com.sds.demo.VO.BaseListVO;
-
 import com.sds.demo.VO.TestCaseVO;
-
-import com.sds.demo.VO.TestResultDetailVO;
 import com.sds.demo.converter.TestCaseConverter;
 import com.sds.demo.dao.ComponentMapper;
 import com.sds.demo.dao.TestCaseMapper;
+import com.sds.demo.util.GetData;
 import com.sds.demo.util.IperfCommand;
-import com.sds.demo.util.ResultHandle;
 import com.sds.demo.util.SSHConnection;
+import com.sds.demo.util.TimeUtil;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @Author Voidmian
@@ -28,8 +33,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TestCaseImpl implements TestCaseService {
-    private final TestCaseMapper testCaseMapper;
-    private final ComponentMapper componentMapper;
+    @Autowired
+    private TestCaseMapper testCaseMapper;
+    @Autowired
+    private ComponentMapper componentMapper;
     @Value("${Iperf.A.ip}")
     String hostA;
     @Value("${Iperf.A.port}")
@@ -38,6 +45,19 @@ public class TestCaseImpl implements TestCaseService {
     String userA;
     @Value("${Iperf.A.password}")
     String passwordA;
+    @Value("${Iperf.remoteA}")
+    String remoteA;
+
+    @Value("${Iperf.B.ip}")
+    String hostB;
+    @Value("${Iperf.B.port}")
+    int portB;
+    @Value("${Iperf.B.username}")
+    String userB;
+    @Value("${Iperf.B.password}")
+    String passwordB;
+    @Value("${Iperf.remoteB}")
+    String remoteB;
 
     @Value("${Iperf.C.ip}")
     String hostC;
@@ -47,18 +67,17 @@ public class TestCaseImpl implements TestCaseService {
     String userC;
     @Value("${Iperf.C.password}")
     String passwordC;
+    @Value("${Iperf.remoteC}")
+    String remoteC;
+    @Value("${localPath}")
+    String localPath;
+
+    private GetData getData = new GetData();
+
 
     @Autowired
-    private IperfServiceImpl iperfService;
-    @Autowired
-    private DataService dataService;
-    @Autowired
-    private TestResultImpl testResult;
+    private TestResultImpl testResultService;
 
-    public TestCaseImpl(TestCaseMapper testCaseMapper, ComponentMapper componentMapper) {
-        this.testCaseMapper = testCaseMapper;
-        this.componentMapper = componentMapper;
-    }
 
     public BaseListVO<TestCaseVO> getAllComponentPage(Integer pageSize, Integer pageIndex) {
         BaseList<TestCase> baseList = new BaseList<>(pageSize, pageIndex);
@@ -83,56 +102,72 @@ public class TestCaseImpl implements TestCaseService {
         return "ok";
     }
 
-    public TestResultDetailVO startCase(String name) {
+    public void startCase(String name) {
         try {
+            IperfCommand iperfCommand = new IperfCommand();
             TestCase testCase = testCaseMapper.getOneByName(name);
-            //:TODO 取一个
-            Component component = componentMapper.getOneByName(name);
-            //:TODO 获取组件命令
-            String commandComponent = component.getCommand() + "\n";
-            //:TODO B的连接数据修改
-            SSHConnection connectionB = new SSHConnection(hostC, portC, userC, passwordC);
-            connectionB.exeCommand(commandComponent);
 
-            IperfParams iperfParams = new IperfParams(testCase.getProtocol(), testCase.getTotalPackages(), testCase.getTimeSlot().toString(),
+            Component component = componentMapper.getOneByName(testCase.getComponentName());
+            SSHConnection connectionA = new SSHConnection(hostA, portA, userA, passwordA);
+            SSHConnection connectionB = new SSHConnection(hostB, portB, userB, passwordB);
+            connectionB.exeCommand("docker run -idt -p 192.168.12.1:8080:8080 --name container_test" + " --privileged=true --cpus="
+                    + component.getCommand() + " " + "centos6316:4.0" + " /usr/sbin/init\n");
+
+            IperfParams iperfParams = new IperfParams(testCase.getProtocol(), testCase.getTotalTime(), testCase.getTimeSlot(),
                     testCase.getBandwidthLimit(), testCase.getTotalPackages(), testCase.getBufferLength(), testCase.getBidirectionalTest(),
                     testCase.getTCPWindow(), testCase.getMss(), testCase.getIpv4_6());
 
-            String commandB = IperfCommand.startCCommand(testCase.getName() + "C");
-            String commandA = IperfCommand.startACommand(testCase.getName() + "A", iperfParams);
-            SSHConnection connectionA = new SSHConnection(hostA, portA,userA, passwordA);
+            String commandC = iperfCommand.startCCommand(testCase.getName() + "C");
+            String commandA = iperfCommand.startACommand(testCase.getName() + "A", iperfParams);
 
-            String[] commandsB = new String[3];
-            commandsB[0] = "docker exec " + component.getName() + "\n";
-            commandsB[1] = commandB + "\n";
-            commandsB[2] = "docker cp " + component.getName() + ":" + IperfCommand.remoteAddr + "\\" + testCase.getName() + "C" + " \\home";
+            String commandB = "docker exec -it container_test /bin/bash\n" + commandC;
+            connectionB.exeCommand(commandB);
             connectionA.exeCommand(commandA);
-            connectionB.exeCommands(commandsB);
+            System.out.println(commandA);
+            System.out.println("===============A上执行命令============");
 
-            String localPathB = "\\home\\result\\"+ testCase.getName() + "C";
-            String localPathA = "\\home\\result\\"+ testCase.getName() + "A";
-            String remotePathA = "\\home";
+            Thread.sleep(iperfParams.getTotalTime() * 1200);
+            System.out.println("===============等待结束============");
+
+            connectionB.exeCommand("docker cp container_test" + ":"  + "/iperf3_file/" + testCase.getName() + "C.txt " + remoteB + "\n");
+            System.out.println("===============拷贝到本机============");
+            connectionB.exeCommand("docker kill container_test\n");
+            System.out.println("===============杀死容器============");
+            connectionB.exeCommand("docker rm container_test\n");
+            System.out.println("===============删除容器============");
+
+            String localPathB = localPath + "/" + testCase.getName() + "C.txt";
+            String localPathA = localPath + "/" + testCase.getName() + "A.txt";
             String remoteFileNameA = testCase.getName() + "A.txt";
-            String remotePathB = "\\home";
             String remoteFileNameB = testCase.getName() + "C.txt";
-            connectionB.download(localPathB, remotePathB, remoteFileNameB);
-            connectionA.download(localPathA, remotePathA, remoteFileNameA);
+            System.out.println("localPathA："+localPathA);
+            System.out.println("localPathB："+localPathB);
+            connectionB.download(localPathB, remoteB, remoteFileNameB);
+            System.out.println("===============B上下载============");
+            connectionA.download(localPathA, remoteA, remoteFileNameA);
+            System.out.println("===============A上下载============");
 
-            Data dataA = dataService.getDataFromFile(localPathA, testCase.getName() + "A.txt");
-            Data dataB = dataService.getDataFromFile(localPathB, testCase.getName() + "C.txt");
+            TestResult dataA = getData.getDataFromFile(localPath, testCase.getName() + "A.txt");
+            TestResult dataB = getData.getDataFromFile(localPath, testCase.getName() + "C.txt");
 
-            //: TODO 重新编写result服务
-            testResult.insert(dataA);
-            testResult.insert(dataB);
+            DataD dA = new DataD(dataA.getCaseName(), JSON.toJSONString(dataA, SerializerFeature.WriteMapNullValue));
+            DataD dB = new DataD(dataB.getCaseName(), JSON.toJSONString(dataB, SerializerFeature.WriteMapNullValue));
+            dA.setDate(TimeUtil.now());
+            dB.setDate(TimeUtil.now());
 
 
-            //ResultHandle resultHandle = new ResultHandle();
-            //resultHandle.handle(localPath);
-            return new TestResultDetailVO(testCase.getId(), resultHandle.getTransRate(), resultHandle.getTransScale());
+            testResultService.insert(dA);
+            testResultService.insert(dB);
+
+
         } catch (Exception e) {
             System.out.println(e.toString());
-            return null;
         }
+    }
+
+    @Override
+    public List<TestCase> getAll() {
+        return testCaseMapper.getAll();
     }
 
 }

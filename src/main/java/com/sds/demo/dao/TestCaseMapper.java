@@ -12,7 +12,6 @@ import java.util.List;
 @org.springframework.stereotype.Component
 public interface TestCaseMapper {
     TestCase getOneByName(String name);
-    List<TestCase> getListByName(String name);
     List<TestCase> getAll();
     List<TestCase> getAllPage(int pageSize, int offset);
     int insertTestCase(TestCase testCase);

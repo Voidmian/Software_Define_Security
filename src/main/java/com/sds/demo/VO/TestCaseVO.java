@@ -15,8 +15,8 @@ public class TestCaseVO {
     private String desc;
     private String protocol;
     private String componentName;
-    private String totalTime;
-    private String timeSlot;
+    private int totalTime;
+    private int timeSlot;
     private String bandwidthLimit;
     private String totalPackages;
     private String bufferLength;

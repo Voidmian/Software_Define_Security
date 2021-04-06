@@ -1,7 +1,4 @@
 Server:
-  host: 121.248.12.116
-  username: root
-  password: 123568
   port: 6316
   servlet:
     context-path: /sds
@@ -10,26 +7,34 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/sds?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: root
-    password: 123568
+    password: 123456
 mybatis:
   mapper-locations: mybatis/mapper/*.xml
 
 Iperf:
   A:
-    ip: 192.127.10.2
+    ip: 192.168.10.2
     port: 22
-    username: root
+    username: sender
     password: 123456
   C:
-    ip: 192.127.12.1
-    port: 8081
-    username: root
+    ip: 192.168.12.1
+    port: 8080
+    username: docker6316
     password: 123456
-  remote: /home/sender/iperf3_file/
-  testPort:  26316
+  B:
+    ip: 192.168.10.1
+    port: 22
+    username: docker6316
+    password: 123456
+  remoteA: /home/sender/iperf3_file
+  remoteB: /home/docker6316
+  remoteC: /container_test/iperf3_file
+  testPort: 8080
 Component:
   B:
-    ip: 47.98.228.148
+    ip: 192.168.12.1
     port: 22
-    username: root
-    password: yjj0413_Aly
+    username: docker6316
+    password: 123456
+localPath: /home/ctrl_machine

@@ -1,11 +1,8 @@
 package com.sds.demo.converter;
 
-import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.sds.demo.Entity.BaseList;
-import com.sds.demo.Entity.TestCase;
-import com.sds.demo.Entity.TestResult;
+import com.sds.demo.Entity.TestResult1;
 import com.sds.demo.VO.BaseListVO;
-import com.sds.demo.VO.TestCaseVO;
 import com.sds.demo.VO.TestResultDetailVO;
 import com.sds.demo.VO.TestResultVO;
 import org.springframework.beans.BeanUtils;
@@ -18,35 +15,35 @@ import java.util.ArrayList;
  */
 public class TestResultConverter {
 
-    static public TestResult convertVD(TestResultVO testResultVO) {
-        TestResult testResult = new TestResult();
-        BeanUtils.copyProperties(testResultVO, testResult);
-        return testResult;
+    static public TestResult1 convertVD(TestResultVO testResultVO) {
+        TestResult1 testResult1 = new TestResult1();
+        BeanUtils.copyProperties(testResultVO, testResult1);
+        return testResult1;
     }
 
-    static public TestResultVO convertDV(TestResult testResult) {
+    static public TestResultVO convertDV(TestResult1 testResult1) {
         TestResultVO testResultVO = new TestResultVO();
-        BeanUtils.copyProperties(testResult, testResultVO);
+        BeanUtils.copyProperties(testResult1, testResultVO);
         return testResultVO;
     }
 
-    static public TestResult convertDetailVD(TestResultDetailVO testResultDetailVO) {
-        TestResult testResult = new TestResult();
-        BeanUtils.copyProperties(testResultDetailVO, testResult);
-        return testResult;
+    static public TestResult1 convertDetailVD(TestResultDetailVO testResultDetailVO) {
+        TestResult1 testResult1 = new TestResult1();
+        BeanUtils.copyProperties(testResultDetailVO, testResult1);
+        return testResult1;
     }
 
-    static public TestResultDetailVO convertDDetailV(TestResult testResult) {
+    static public TestResultDetailVO convertDDetailV(TestResult1 testResult1) {
         TestResultDetailVO testResultDetailVO = new TestResultDetailVO();
-        BeanUtils.copyProperties(testResult, testResultDetailVO);
+        BeanUtils.copyProperties(testResult1, testResultDetailVO);
         return testResultDetailVO;
     }
 
 
-    static public BaseListVO<TestResultVO> convertListDV(BaseList<TestResult> baseList) {
+    static public BaseListVO<TestResultVO> convertListDV(BaseList<TestResult1> baseList) {
         BaseListVO<TestResultVO> baseListVO = new BaseListVO<>(baseList.getPageSize(), baseList.getPageIndex());
         baseListVO.setList(new ArrayList<>());
-        for (TestResult c : baseList.getList()
+        for (TestResult1 c : baseList.getList()
         ) {
             baseListVO.getList().add(convertDV(c));
         }

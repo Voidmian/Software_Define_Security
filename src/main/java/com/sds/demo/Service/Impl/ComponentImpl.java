@@ -28,7 +28,7 @@ public class ComponentImpl implements ComponentService {
     private String username;
     @Value("${Component.B.password}")//todo：需要配置B
     private String password;                 //todo：需要配置B
-    @Value("${Component.B.remote}")
+    @Value("${Iperf.remoteB}")
     private String remote;                  //todo：需要配置B 镜像存放地址
 
 
@@ -59,6 +59,7 @@ public class ComponentImpl implements ComponentService {
             String out = SSHConnection.copy(sLocation, remote, componentVO.getName());
             Component component = ComponentConverter.convertVD(componentVO);
             component.setLocation(remote + "/" + componentVO.getName());
+            SSHConnection.exeCommand("docker load -i " + component.getLocation() + "\n");
             componentMapper.insertComponent(component);
         } catch (Exception e) {
             System.out.println(e.toString());

@@ -1,8 +1,6 @@
 package com.sds.demo.dao;
 
-import com.sds.demo.Entity.Data;
-import com.sds.demo.Entity.TestCase;
-import com.sds.demo.Entity.TestResult;
+import com.sds.demo.Entity.DataD;
 
 
 import java.util.List;
@@ -13,9 +11,8 @@ import java.util.List;
  */
 @org.springframework.stereotype.Component
 public interface TestResultMapper {
-    TestResult getOneById(int id);
-    List<TestResult> getListByCaseIdPage(int id,int pageSize, int offset);
-    List<TestResult> getListByCaseId(int id);
-    int insertTestResult(Data data);
-    int deleteTestResult(int id);
+    List<DataD> getListByCaseName(String name);
+    int insertTestResult(DataD data);
+    int deleteAllByCaseName(String name);
+    List<DataD> getAll();
 }

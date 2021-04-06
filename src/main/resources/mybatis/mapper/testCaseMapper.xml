@@ -6,17 +6,26 @@
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="desc" property="desc" jdbcType="VARCHAR"/>
         <result column="protocol" property="protocol" jdbcType="VARCHAR"/>
-        <result column="concurrency" property="concurrency" jdbcType="INTEGER"/>
-        <result column="seconds" property="seconds" jdbcType="INTEGER"/>
+        <result column="component_name" property="componentName" jdbcType="VARCHAR"/>
+        <result column="time_slot" property="timeSlot" jdbcType="INTEGER"/>
+        <result column="total_time" property="totalTime" jdbcType="INTEGER"/>
+        <result column="bandwidth_limit" property="bandwidthLimit" jdbcType="VARCHAR"/>
+        <result column="total_packages" property="totalPackages" jdbcType="VARCHAR"/>
+        <result column="buffer_length" property="bufferLength" jdbcType="VARCHAR"/>
+        <result column="bidirectional_test" property="bidirectionalTest" jdbcType="VARCHAR"/>
+        <result column="tcp_window" property="TCPWindow" jdbcType="VARCHAR"/>
+        <result column="mss" property="mss" jdbcType="VARCHAR"/>
+        <result column="ipv4_6" property="ipv4_6" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Fields">
-    `name`,`desc`,`protocol`,`time_slot`,`total_time`, `component_name`, `bandwidth_limit`,`total_packages`,`buffer_length`,`bidirectional_test`,`tcp_window`,`mss`,`ipv4_6`,`create_time`,`update_time`
+    `name`,`desc`,`protocol`,`time_slot`,`total_time`, `component_name`, `bandwidth_limit`,`total_packages`,`buffer_length`,
+    `bidirectional_test`,`tcp_window`,`mss`,`ipv4_6`,`create_time`,`update_time`
     </sql>
 
-    <select id="getOneByName" parameterType="java.lang.Integer" resultMap="BaseTestCase">
+    <select id="getOneByName" parameterType="String" resultMap="BaseTestCase">
         SELECT * FROM test_case WHERE name = #{name}
     </select>
 
@@ -43,11 +52,10 @@
         #{componentName,jdbcType=VARCHAR},
         #{bandwidthLimit,jdbcType=VARCHAR},
         #{totalPackages,jdbcType=VARCHAR},
-        #{protocol,jdbcType=VARCHAR},
         #{bufferLength,jdbcType=VARCHAR},
         #{bidirectionalTest,jdbcType=VARCHAR},
+        #{TCPWindow,jdbcType=VARCHAR},
         #{mss,jdbcType=VARCHAR},
-        #{bidirectionalTest,jdbcType=VARCHAR},
         #{ipv4_6,jdbcType=VARCHAR},
         #{createTime,jdbcType=TIMESTAMP},
         #{updateTime,jdbcType=TIMESTAMP}

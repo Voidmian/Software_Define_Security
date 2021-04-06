@@ -10,8 +10,8 @@ import lombok.Data;
 public class IperfParams {
 
     private String protocol;
-    private String totalTime;
-    private String timeSlot;
+    private int totalTime;
+    private int timeSlot;
     private String bandwidthLimit;
     private String totalPackages;
     private String bufferLength;
@@ -20,7 +20,7 @@ public class IperfParams {
     private String mss;
     private String ipv4_6;
 
-    public IperfParams(String protocol, String totalTime, String timeSlot, String bandwidthLimit, String totalPackages,
+    public IperfParams(String protocol, int totalTime, int timeSlot, String bandwidthLimit, String totalPackages,
                      String bufferLength, String bidirectionalTest, String TCPWindow, String mss, String ipv4_6){
         this.protocol = protocol;
         this.totalPackages = totalPackages;

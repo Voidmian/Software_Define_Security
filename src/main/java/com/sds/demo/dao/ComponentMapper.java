@@ -19,6 +19,4 @@ public interface ComponentMapper {
     List<Component> getAllPage(int pageSize, int offset);
     List<Component> getAll();
     int insertComponent(Component component);
-    int updateComponent(Component component);
-    int deleteComponent(int id );
 }

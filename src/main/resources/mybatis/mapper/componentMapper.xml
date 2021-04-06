@@ -11,7 +11,7 @@
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <select id="getOneByName" parameterType="java.lang.Integer" resultMap="BaseComponent">
+    <select id="getOneByName" parameterType="String" resultMap="BaseComponent">
         SELECT * FROM component WHERE name = #{name}
     </select>
 

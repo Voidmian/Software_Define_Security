@@ -57,11 +57,11 @@ public class StartIperf {
             cmd = cmd + " -M " + iperfParams.getMss();
         if (iperfParams.getTCPWindow() != "")
             cmd = cmd + " -w " + iperfParams.getTCPWindow();
-        if (iperfParams.getTimeSlot() != "")
+        if (iperfParams.getTimeSlot() != 0)
             cmd = cmd + " -i " + iperfParams.getTimeSlot();
         if (iperfParams.getTotalPackages() != "")
             cmd = cmd + " -n " + iperfParams.getTotalPackages();
-        if (iperfParams.getTotalTime() != "")
+        if (iperfParams.getTotalTime() != 0)
             cmd = cmd + " -t " + iperfParams.getTotalTime();
         if (iperfParams.getBandwidthLimit() != "")
             cmd = cmd + " -b " + iperfParams.getBandwidthLimit();

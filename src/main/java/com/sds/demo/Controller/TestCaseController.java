@@ -1,15 +1,19 @@
 package com.sds.demo.Controller;
 
-import com.sds.demo.Entity.BaseList;
+import com.alibaba.fastjson.JSONObject;
 import com.sds.demo.Entity.TestCase;
-import com.sds.demo.Entity.TestResult;
+import com.sds.demo.Service.Impl.TestCaseImpl;
+import com.sds.demo.Service.Impl.TestResultImpl;
 import com.sds.demo.Service.TestCaseService;
 import com.sds.demo.Service.TestResultService;
 import com.sds.demo.VO.*;
+import com.sds.demo.dao.TestCaseMapper;
 import com.sds.demo.form.TestCaseForm;
 import com.sds.demo.util.TimeUtil;
-import org.apache.ibatis.annotations.Delete;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @Author Voidmian
@@ -18,20 +22,25 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/test_case")
 public class TestCaseController {
-    TestCaseService testCaseService;
-    TestResultService testResultService;
-    public TestCaseController( TestCaseService testCaseService, TestResultService testResultService) {
-        this.testCaseService = testCaseService;
-        this.testResultService = testResultService;
+    @Autowired
+    TestCaseImpl testCaseService;
+    @Autowired
+    TestResultImpl testResultService;
+    @Autowired
+    TestCaseMapper testCaseMapper;
+
+
+    @GetMapping("/get_one/{name}")
+    public TestCase getOneByCaseName(@PathVariable String name) {
+        TestCase testCase = testCaseMapper.getOneByName(name);
+        return testCase;
     }
 
 
     @GetMapping("/get_all")
-    public BaseVO<BaseListVO> getAllTestCase(
-            @RequestParam(value = "page_size", defaultValue = "100",required = false) int pageSize,
-            @RequestParam(value = "page_index", defaultValue = "0",required = false) int pageIndex) {
-        BaseListVO<TestCaseVO> baseList = testCaseService.getAllComponentPage(pageSize, pageIndex);
-        return new BaseVO<>("success", baseList, 200);
+    public List<TestCase> getAllTestCase() {
+        List<TestCase> baseList = testCaseService.getAll();
+        return baseList;
     }
 
     @PostMapping("/insert")
@@ -42,6 +51,7 @@ public class TestCaseController {
         testCaseVO.setDesc(testCaseForm.getDesc());
         testCaseVO.setComponentName(testCaseForm.getComponentName());
         testCaseVO.setProtocol(testCaseForm.getProtocol());
+        testCaseVO.setTimeSlot(testCaseForm.getTimeSlot());
         testCaseVO.setTotalTime(testCaseForm.getTotalTime());
         testCaseVO.setBandwidthLimit(testCaseForm.getBandwidthLimit());
         testCaseVO.setBidirectionalTest(testCaseForm.getBidirectionalTest());
@@ -55,6 +65,7 @@ public class TestCaseController {
         testCaseVO.setUpdateTime(TimeUtil.now());
 
         String res = testCaseService.insert(testCaseVO);
+
         return new BaseVO<>("success", res, 200);
     }
 
@@ -69,12 +80,9 @@ public class TestCaseController {
     }
 
     @PostMapping("/start")
-    /**
-     * @Param String name
-     */
-    public BaseVO<String> startTestCase(String name) {
-        TestResultDetailVO testResultDetailVO = testCaseService.startCase(name);
+    public BaseVO<String> startTestCase(@RequestBody JSONObject name) {
 
+        testCaseService.startCase(name.getString("name"));
         //: TODO 重写
         return new BaseVO<>("success", null, 200);
     }

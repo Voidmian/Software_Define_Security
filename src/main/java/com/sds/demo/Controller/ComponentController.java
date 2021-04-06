@@ -36,22 +36,14 @@ public class ComponentController {
     @PostMapping("/insert")
     public BaseVO<Integer> insertComponent(@RequestBody ComponentForm componentForm) {
         ComponentVO componentVO = new ComponentVO();
-        componentVO.setName(componentForm.getName());
+        String sLocation = componentForm.getSLocation();
+        String suffix = sLocation.substring(sLocation.lastIndexOf("."));
+        componentVO.setName(componentForm.getName() + suffix);
         componentVO.setDesc(componentForm.getDesc());
         componentVO.setCommand(componentForm.getCommand());
         componentVO.setCreateTime(TimeUtil.now());
         componentVO.setUpdateTime(TimeUtil.now());
-        String location = componentService.deployComponent(componentVO,componentForm.getSLocation());
+        String location = componentService.deployComponent(componentVO,sLocation);
         return new BaseVO<>("success", 1, 200);
-    }
-
-
-    @GetMapping("/api/cors/get")
-    public String get(){
-        return "cors test get method";
-    }
-    @PostMapping("/api/cors/post")
-    public String post(){
-        return "cors test post method";
     }
 }
