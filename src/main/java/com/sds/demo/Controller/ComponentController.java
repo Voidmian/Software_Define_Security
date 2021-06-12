@@ -1,23 +1,20 @@
 package com.sds.demo.Controller;
 
-import com.sds.demo.Entity.BaseList;
+
 import com.sds.demo.Entity.Component;
 import com.sds.demo.Service.ComponentService;
 import com.sds.demo.VO.*;
-import com.sds.demo.converter.ComponentConverter;
 import com.sds.demo.form.ComponentForm;
 import com.sds.demo.util.TimeUtil;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.List;
 
 
 /**
  * @Author Voidmian
  * @Date 2021/1/27 16:18
  */
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/component")
 public class ComponentController {
@@ -37,26 +34,16 @@ public class ComponentController {
 
 
     @PostMapping("/insert")
-    public BaseVO<Integer> getAllComponent(@RequestBody ComponentForm componentForm) {
+    public BaseVO<Integer> insertComponent(@RequestBody ComponentForm componentForm) {
         ComponentVO componentVO = new ComponentVO();
-        componentVO.setName(componentForm.getName());
+        String sLocation = componentForm.getSLocation();
+        String suffix = sLocation.substring(sLocation.lastIndexOf("."));
+        componentVO.setName(componentForm.getName() + suffix);
         componentVO.setDesc(componentForm.getDesc());
         componentVO.setCommand(componentForm.getCommand());
         componentVO.setCreateTime(TimeUtil.now());
         componentVO.setUpdateTime(TimeUtil.now());
-        String location = componentService.deployComponent(componentVO,componentForm.getSLocation());
+        String location = componentService.deployComponent(componentVO,sLocation);
         return new BaseVO<>("success", 1, 200);
     }
-
-    @GetMapping("/operate")
-    /**
-     * @Param id int
-     * @Param operation String
-     */
-    public BaseVO<Integer> startComponent(Integer id,String operation) {
-        Component component = componentService.getComponentById(id);
-        componentService.operateComponent(component,operation);
-        return new BaseVO<>("success", id, 200);
-    }
-
 }

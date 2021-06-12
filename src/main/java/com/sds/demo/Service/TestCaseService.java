@@ -2,9 +2,9 @@ package com.sds.demo.Service;
 
 import com.sds.demo.Entity.TestCase;
 import com.sds.demo.VO.BaseListVO;
-import com.sds.demo.VO.ComponentVO;
 import com.sds.demo.VO.TestCaseVO;
-import com.sds.demo.VO.TestResultDetailVO;
+
+import java.util.List;
 
 /**
  * @Author Voidmian
@@ -12,10 +12,8 @@ import com.sds.demo.VO.TestResultDetailVO;
  */
 public interface TestCaseService {
     public BaseListVO<TestCaseVO> getAllComponentPage(Integer pageSize, Integer pageIndex);
-
     public String insert(TestCaseVO testCaseVO);
-    public String update(TestCaseVO testCaseVO);
     public String delete(int id);
-
-    public TestResultDetailVO startCase(int id);
+    public void startCase(String name);
+    List<TestCase> getAll();
 }

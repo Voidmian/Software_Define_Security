@@ -12,12 +12,20 @@ import java.util.Date;
 @lombok.Data
 @Repository
 public class TestCase   {
-    private Integer id;
+    private int id;
     private String name;
     private String desc;
     private String protocol;
-    private Integer concurrency;
-    private Integer seconds;
+    private int timeSlot;
+    private int totalTime;
+    private String componentName;
+    private String bandwidthLimit;
+    private String totalPackages;
+    private String bufferLength;
+    private String bidirectionalTest;
+    private String TCPWindow;
+    private String mss;
+    private String ipv4_6;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 }

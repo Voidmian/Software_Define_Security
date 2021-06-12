@@ -13,7 +13,6 @@ import java.util.List;
 public interface ComponentService {
     public Integer insert(ComponentVO componentVO,String location);
     public String deployComponent(ComponentVO componentVO,String sLocation);
-    public Component getComponentById(int id);
-    public void operateComponent(Component component,String operation);
+    public Component getComponentByName(String name);
     public BaseListVO<ComponentVO> getAllComponentPage(Integer pageSize, Integer pageIndex);
 }

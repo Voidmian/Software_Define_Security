@@ -2,7 +2,6 @@ package com.sds.demo.Entity;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sds.demo.VO.ComponentVO;
 import org.springframework.stereotype.Repository;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -25,5 +24,4 @@ public class Component implements Serializable {
     private LocalDateTime createTime;
     @JsonProperty("update_time")
     private LocalDateTime updateTime;
-
 }

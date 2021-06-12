@@ -11,8 +11,8 @@
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <select id="getOneById" parameterType="java.lang.Integer" resultMap="BaseComponent">
-        SELECT * FROM component WHERE id = #{id}
+    <select id="getOneByName" parameterType="String" resultMap="BaseComponent">
+        SELECT * FROM component WHERE name = #{name}
     </select>
 
     <select id="getListByName" parameterType="java.lang.String" resultMap="BaseComponent">
@@ -28,9 +28,8 @@
     </select>
 
     <insert id="insertComponent" parameterType="com.sds.demo.Entity.Component" useGeneratedKeys="true" keyProperty="id">
-        insert into  `sds`.`component`(`id`,`name`,`desc`,`command`,`location`,`create_time`,`update_time`)
+        insert into  `sds`.`component`(`name`,`desc`,`command`,`location`,`create_time`,`update_time`)
         values(
-        #{id},
         #{name,jdbcType=VARCHAR},
         #{desc,jdbcType=VARCHAR},
         #{command,jdbcType=VARCHAR},

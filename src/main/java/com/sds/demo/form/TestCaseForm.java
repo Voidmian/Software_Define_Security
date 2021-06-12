@@ -9,21 +9,42 @@ import lombok.Data;
  */
 @Data
 public class TestCaseForm {
-    @JsonProperty("id")
-    int id;
-
     @JsonProperty("name")
-    String name;
+    private String name;
 
     @JsonProperty("desc")
-    String desc;
+    private String desc;
 
     @JsonProperty("protocol")
-    String protocol;
+    private String protocol;
 
-    @JsonProperty("concurrency")
-    int concurrency;
+    @JsonProperty("componentName")
+    private String componentName;
 
-    @JsonProperty("seconds")
-    int seconds;
+    @JsonProperty("timeSlot")
+    private int timeSlot;
+
+    @JsonProperty("totalTime")
+    private int totalTime;
+
+    @JsonProperty("bandwidthLimit")
+    private String bandwidthLimit;
+
+    @JsonProperty("totalPackages")
+    private String totalPackages;
+
+    @JsonProperty("bufferLength")
+    private String bufferLength;
+
+    @JsonProperty("bidirectionalTest")
+    private String bidirectionalTest;
+
+    @JsonProperty("TCPWindow")
+    private String TCPWindow;
+
+    @JsonProperty("mss")
+    private String mss;
+
+    @JsonProperty("ipv4_6")
+    private String ipv4_6;
 }
